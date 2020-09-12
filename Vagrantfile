@@ -11,7 +11,7 @@ Vagrant.configure('2') do |config|
     v.cpus = '2'
     v.customize ['setextradata', :id, 'VBoxInternal2/SharedFoldersEnableSymlinksCreate/v-root', '1']
   end
-=begin
+
   config.vm.provision 'shell', privileged: true, inline: <<-SHELL
     yum install -y cloud-utils-growpart
     sudo growpart /dev/sda 1
@@ -76,5 +76,4 @@ EOL
 
     echo "Djangopotify workspace created!"
   SHELL
-=end
 end
