@@ -67,6 +67,9 @@ EOL
     systemctl start django_python_workout.service
     systemctl enable django_python_workout.service
 
+    pip install gunicorn
+    pip install django-heroku
+
     echo "Django Python Workout created!"
   SHELL
 =end
