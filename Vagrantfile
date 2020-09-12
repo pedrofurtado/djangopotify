@@ -4,7 +4,7 @@ Vagrant.configure('2') do |config|
   config.disksize.size = '50GB'
   config.vbguest.installer_options = { allow_kernel_upgrade: true, reboot_timeout: 5000 }
   config.vm.synced_folder '.', '/vagrant', type: 'virtualbox'
-  config.vm.network 'forwarded_port', guest: 8000, host: 8000, id: 'django'
+  config.vm.network 'forwarded_port', guest: 2222, host: 2222, id: 'django'
 
   config.vm.provider 'virtualbox' do |v|
     v.memory = '4096'
@@ -17,7 +17,15 @@ Vagrant.configure('2') do |config|
     sudo growpart /dev/sda 1
     sudo xfs_growfs /
 
-    yum install -y sqlite sqlite-devel
+    yum install -y sqlite sqlite-devel postgresql-devel
+
+    yum install -y yum-utils device-mapper-persistent-data lvm2
+    yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+    yum install -y --nobest docker-ce docker-ce-cli containerd.io
+    systemctl start docker
+    systemctl enable docker
+
+    docker container run --name postgresql --restart always -d -p 5432:5432 -e POSTGRES_PASSWORD=postgres -e POSTGRES_USER=postgres -e POSTGRES_DB=djangopotify postgres:12
 
     export PYTHON_VERSION=3.8.5
     yum install -y make tar wget gcc openssl-devel bzip2-devel libffi-devel
