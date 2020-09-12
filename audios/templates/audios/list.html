@@ -1,0 +1,19 @@
+list audios
+<br>
+<table class="table">
+  <tr>
+      <thead class="thead-light">
+          <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Name</th>
+          </tr>
+      </thead>
+      <tbody>
+          {% for audio in audios %}
+          <tr>
+              <td>{{audio.id}}</td>
+              <td>{{audio.name}}</td>
+          </tr>
+          {% endfor %}
+      </tbody>
+</table>
