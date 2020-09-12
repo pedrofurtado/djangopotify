@@ -4,7 +4,7 @@ Vagrant.configure('2') do |config|
   config.disksize.size = '50GB'
   config.vbguest.installer_options = { allow_kernel_upgrade: true, reboot_timeout: 5000 }
   config.vm.synced_folder '.', '/vagrant', type: 'virtualbox'
-  config.vm.network 'forwarded_port', guest: 2222, host: 2222, id: 'django'
+  config.vm.network 'forwarded_port', guest: 4444, host: 4444, id: 'django'
 
   config.vm.provider 'virtualbox' do |v|
     v.memory = '4096'
@@ -48,7 +48,7 @@ Type=simple
 Restart=always
 RestartSec=1
 StartLimitInterval=0
-ExecStart=/bin/bash -c 'cd /vagrant && python manage.py runserver 0.0.0.0:2222'
+ExecStart=/bin/bash -c 'cd /vagrant && python manage.py runserver 0.0.0.0:4444'
 
 [Install]
 WantedBy=multi-user.target
