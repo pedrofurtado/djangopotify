@@ -17,7 +17,7 @@ Vagrant.configure('2') do |config|
     sudo growpart /dev/sda 1
     sudo xfs_growfs /
 
-    yum install -y sqlite sqlite-devel postgresql-devel
+    yum install -y vim sqlite sqlite-devel postgresql-devel
 
     yum install -y yum-utils device-mapper-persistent-data lvm2
     yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
