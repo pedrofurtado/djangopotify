@@ -70,6 +70,10 @@ EOL
     pip install gunicorn
     pip install django-heroku
 
+    python manage.py migrate
+
+    pip install --upgrade --force-reinstall -r requirements.txt
+
     echo "Django Python Workout created!"
   SHELL
 =end
