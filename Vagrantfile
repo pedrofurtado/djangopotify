@@ -39,20 +39,16 @@ Vagrant.configure('2') do |config|
     ln -sf /usr/local/bin/pip3.8 /usr/bin/pip
     ln -sf /usr/local/bin/pip3.8 /usr/bin/pip3
 
-    export DJANGO_VERSION=3.1.1
-    pip install Django==$DJANGO_VERSION
-    ln -sf /usr/local/bin/django-admin /usr/bin/django-admin
-
-    cat >> /etc/systemd/system/django_python_workout.service << 'EOL'
+    cat >> /etc/systemd/system/djangopotify.service << 'EOL'
 [Unit]
-Description=Django Python Workout
+Description=Djangopotify
 
 [Service]
 Type=simple
 Restart=always
 RestartSec=1
 StartLimitInterval=0
-ExecStart=/bin/bash -c 'cd /vagrant && python manage.py runserver 0.0.0.0:8000'
+ExecStart=/bin/bash -c 'cd /vagrant && python manage.py runserver 0.0.0.0:2222'
 
 [Install]
 WantedBy=multi-user.target
@@ -63,18 +59,22 @@ cd /vagrant
 sudo su
 EOL
 
-    systemctl daemon-reload
-    systemctl start django_python_workout.service
-    systemctl enable django_python_workout.service
+    cat >> /home/vagrant/upgrade_dependencies.sh <<EOL
+#!/bin/bash
+cd /vagrant
+pip install --upgrade --force-reinstall -r requirements.txt
+pip freeze > requirements.txt
+EOL
+    chmod +x /home/vagrant/upgrade_dependencies.sh
 
-    pip install gunicorn
-    pip install django-heroku
-
+    cd /vagrant
+    pip install -r requirements.txt
     python manage.py migrate
+    systemctl daemon-reload
+    systemctl start djangopotify.service
+    systemctl enable djangopotify.service
 
-    pip install --upgrade --force-reinstall -r requirements.txt
-
-    echo "Django Python Workout created!"
+    echo "Djangopotify workspace created!"
   SHELL
 =end
 end
