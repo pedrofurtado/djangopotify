@@ -6,6 +6,9 @@
   <dl class="row">
     <dt class="col-sm-3">name</dt>
     <dd class="col-sm-9">{{ audio.name }}</dd>
+    {% if audio.cover %}
+      <img src="{{ audio.cover.url }}">
+    {% endif %}
   </dl>
   </div>
 </div>

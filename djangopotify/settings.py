@@ -124,5 +124,13 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+# Uploads
+
+import os
+MEDIA_URL = 'uploads/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
+
+# Heroku
+
 import django_heroku
 django_heroku.settings(locals())
