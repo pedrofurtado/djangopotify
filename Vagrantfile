@@ -5,6 +5,7 @@ Vagrant.configure('2') do |config|
   config.vbguest.installer_options = { allow_kernel_upgrade: true, reboot_timeout: 5000 }
   config.vm.synced_folder '.', '/vagrant', type: 'virtualbox'
   config.vm.network 'forwarded_port', guest: 4444, host: 4444, id: 'django'
+  config.vm.network 'forwarded_port', guest: 4445, host: 4445, id: 'mailer'
 
   config.vm.provider 'virtualbox' do |v|
     v.memory = '4096'
@@ -26,6 +27,7 @@ Vagrant.configure('2') do |config|
     systemctl enable docker
 
     docker container run --name postgresql --restart always -d -p 5432:5432 -e POSTGRES_PASSWORD=postgres -e POSTGRES_USER=postgres -e POSTGRES_DB=djangopotify postgres:12
+    docker container run --name mailer     --restart always -d -p 4445:8025 -p 3006:1025 mailhog/mailhog
 
     export PYTHON_VERSION=3.8.5
     yum install -y make tar wget gcc openssl-devel bzip2-devel libffi-devel
@@ -57,6 +59,11 @@ EOL
     cat >> /home/vagrant/.bashrc <<EOL
 cd /vagrant
 sudo su
+export DJANGOPOTIFY_EMAIL_USE_TLS=no
+export DJANGOPOTIFY_EMAIL_PORT=3006
+export DJANGOPOTIFY_EMAIL_HOST=localhost
+export DJANGOPOTIFY_EMAIL_HOST_USER=''
+export DJANGOPOTIFY_EMAIL_HOST_PASSWORD=''
 EOL
 
     cat >> /home/vagrant/upgrade_dependencies.sh <<EOL

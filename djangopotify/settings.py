@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -38,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'audios',
+    'accounts',
 ]
 
 MIDDLEWARE = [
@@ -126,9 +128,23 @@ STATIC_URL = '/static/'
 
 # Uploads
 
-import os
 MEDIA_URL = 'uploads/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
+
+# Auth
+
+LOGIN_REDIRECT_URL = '/app/audios/777'
+LOGOUT_REDIRECT_URL = '/app/audios/888'
+LOGIN_URL = '/app/accounts/login'
+
+# Email
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = os.environ['DJANGOPOTIFY_EMAIL_USE_TLS'] == 'yes'
+EMAIL_PORT = os.environ['DJANGOPOTIFY_EMAIL_PORT']
+EMAIL_HOST = os.environ['DJANGOPOTIFY_EMAIL_HOST']
+EMAIL_HOST_USER = os.environ['DJANGOPOTIFY_EMAIL_HOST_USER']
+EMAIL_HOST_PASSWORD = os.environ['DJANGOPOTIFY_EMAIL_HOST_PASSWORD']
 
 # Heroku
 
