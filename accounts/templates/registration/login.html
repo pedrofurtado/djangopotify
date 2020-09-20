@@ -1,7 +1,10 @@
-<h4 class="card-title">Djangopotify - Login</h4>
+{% extends 'djangopotify-core/core-theme-base.html' %}
+{% block miolo_pagina %}
+<h4 class="card-title">Djangopotify2 - Login</h4>
 <form method="post">
   {% csrf_token %}
   <input type="hidden" name="next" value="{{ next }}">
   {{ form.as_p }}
   <button type="submit" class="btn btn-primary btn-block">Log in</button>
 </form>
+{% endblock %}
