@@ -18,6 +18,17 @@ Vagrant.configure('2') do |config|
     sudo growpart /dev/sda 1
     sudo xfs_growfs /
 
+    yum check-update -y
+    yum update -y
+    yum -y install epel-release
+    yum check-update -y
+    yum update -y
+    yum config-manager --set-enabled PowerTools
+    yum install -y usbutils dos2unix git cronie vim curl curl-devel tar wget lynx sed zip unzip openssh-server htop gpg gnupg2 make gcc gcc-c++ epel-release yum-utils
+    yum groupinstall -y 'Development Tools'
+    systemctl enable sshd
+    systemctl start sshd
+
     yum install -y git vim sqlite sqlite-devel postgresql-devel
 
     yum install -y yum-utils device-mapper-persistent-data lvm2
@@ -50,20 +61,28 @@ Type=simple
 Restart=always
 RestartSec=1
 StartLimitInterval=0
-ExecStart=/bin/bash -c 'cd /vagrant && python manage.py runserver 0.0.0.0:4444'
+ExecStart=/bin/bash -c 'cd /vagrant && source /etc/profile.d/djangopotify-envs.sh && python manage.py runserver 0.0.0.0:4444'
 
 [Install]
 WantedBy=multi-user.target
 EOL
 
-    cat >> /home/vagrant/.bashrc <<EOL
-cd /vagrant
-sudo su
+    cat >> /etc/profile.d/djangopotify-envs.sh <<EOL
+#!/bin/bash
+
 export DJANGOPOTIFY_EMAIL_USE_TLS=no
 export DJANGOPOTIFY_EMAIL_PORT=3006
 export DJANGOPOTIFY_EMAIL_HOST=localhost
 export DJANGOPOTIFY_EMAIL_HOST_USER=''
 export DJANGOPOTIFY_EMAIL_HOST_PASSWORD=''
+EOL
+    chmod +x /etc/profile.d/djangopotify-envs.sh
+    source /etc/profile.d/djangopotify-envs.sh
+
+    cat >> /home/vagrant/.bashrc <<EOL
+cd /vagrant
+sudo su
+source /etc/profile.d/djangopotify-envs.sh
 EOL
 
     cat >> /home/vagrant/upgrade_dependencies.sh <<EOL
